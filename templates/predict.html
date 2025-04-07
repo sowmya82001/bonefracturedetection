@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bone Fracture Detector</title>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='dash/css/style.css') }}">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Bone Fracture DETECTION</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('predict') }}">Bone Fracture Detector</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/dr_fetch">Bone Experts</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <h2 class="text-center">Upload Image for Skin Disease Detection</h2>
+        
+        <form action="/predict" method="POST" enctype="multipart/form-data" class="text-center mt-4">
+            <input type="file" name="file" required>
+            <br><br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <!-- Prediction Result -->
+        {% if result %}
+            <div class="alert alert-info text-center mt-4">
+                <h4>Prediction: <strong>{{ result }}</strong></h4>
+                {% if confidence %}
+                    <p>Confidence: <strong>{{ confidence * 100 }}%</strong></p>
+                {% endif %}
+                {% if image_path %}
+                    <img src="{{ image_path }}" alt="Uploaded X-ray" class="img-fluid mt-3" style="max-width: 300px;">
+                {% endif %}
+            </div>
+        {% elif error %}
+            <div class="alert alert-danger text-center mt-4">
+                {{ error }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="{{ url_for('static', filename='dash/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='dash/js/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='dash/js/bootstrap.min.js') }}"></script>
+
+    <!-- Bootstrap Fallback (Optional if local JS fails) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
